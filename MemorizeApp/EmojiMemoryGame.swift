@@ -15,9 +15,12 @@ class EmojiMemoryGame: ObservableObject {
         var emojis: Array<String> = ["🙄", "😅", "😇", "😛", "🥳", "🤬"]
         emojis.shuffle()
         let randomNum = Int.random(in: 2...emojis.count)
-        return MemoryGame<String>(numberOfPairsOfCards: randomNum) { pairIndex in
+        var game = MemoryGame<String>(numberOfPairsOfCards: randomNum) { pairIndex in
             return emojis[pairIndex]
         }
+        game.cards.shuffle()
+        print(game)
+        return game
     }
         
     // MARK: - Access to the Model
