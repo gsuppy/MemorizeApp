@@ -12,15 +12,72 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card).onTapGesture {
-                self.viewModel.choose(card: card)
+        VStack {
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(Color.blue)
+                        .padding()
+                    Text("Number of Matches: \(self.viewModel.numMatches)")
+                        .foregroundColor(Color.white)
+                }
+                .frame(minHeight: 0, maxHeight: 100.0)
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(Color.gray)
+                        .padding()
+                    Text("Theme: \(self.viewModel.themeName)")
+                        .foregroundColor(Color.white)
+                }
+                .frame(minHeight: 0, maxHeight: 80.0)
             }
-        .padding(5)
+
+            
+            Grid(viewModel.cards) { card in
+                CardView(card: card).onTapGesture {
+                    self.viewModel.choose(card: card)
+                }
+            .padding(5)
+            }
+            .padding()
+            .foregroundColor(self.viewModel.themeColor)
+            
+            HStack {
+                Button(action: {
+                    print(self.viewModel.numMatches)
+                    self.viewModel.resetModel()
+                }) {
+                    Text("Reset")
+                    Image(systemName: "arrow.counterclockwise")
+                }
+                .frame(minWidth: 0, maxWidth: maxWidth, minHeight: 0, maxHeight: maxHeight)
+                .foregroundColor(Color.white)
+                .background(Color.red)
+                .cornerRadius(cornerRadius)
+                .padding(10)
+                
+                Button(action: {
+                    print(self.viewModel.numMatches)
+                    self.viewModel.resetTheme()
+                }) {
+                    Text("New Theme")
+                    Image(systemName: "star.fill")
+                }
+                .frame(minWidth: 0, maxWidth: maxWidth, minHeight: 0, maxHeight: maxHeight)
+                .foregroundColor(Color.white)
+                .background(Color.pink)
+                .cornerRadius(cornerRadius)
+                .padding(10)
+            }
+
         }
-        .padding()
-        .foregroundColor(Color.orange)
     }
+    
+    //MARK: - Drawing Constants
+    let cornerRadius: CGFloat = 10.0
+    let maxHeight: CGFloat = 40.0
+    let maxWidth: CGFloat = 200.0
 }
 
 struct CardView: View {
